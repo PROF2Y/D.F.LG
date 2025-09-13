@@ -37,10 +37,50 @@ def main():
 def style():
     return send_from_directory('.', 'style.css')
 
-# مجلد الصور
+# مجلد الصور - تجربة عدة مسارات
 @app.route('/images/<filename>')
 def images(filename):
-    return send_from_directory('صور', filename)
+    import os
+    
+    # جرب المسارات المحتملة
+    possible_paths = ['صور', 'images', 'Images', 'صور', './صور', './images']
+    
+    for path in possible_paths:
+        if os.path.exists(path) and os.path.isdir(path):
+            file_path = os.path.join(path, filename)
+            if os.path.exists(file_path):
+                return send_from_directory(path, filename)
+    
+    # إذا لم توجد، أرجع خطأ مع تفاصيل
+    current_dir = os.getcwd()
+    dirs = [d for d in os.listdir('.') if os.path.isdir(d)]
+    return f"Image not found! Current dir: {current_dir}, Available dirs: {dirs}", 404
+
+# route للتشخيص
+@app.route('/debug')
+def debug():
+    import os
+    current_dir = os.getcwd()
+    all_items = os.listdir('.')
+    dirs = [d for d in all_items if os.path.isdir(d)]
+    files = [f for f in all_items if os.path.isfile(f)]
+    
+    html = f"""
+    <h2>Debug Info</h2>
+    <p><b>Current Directory:</b> {current_dir}</p>
+    <p><b>Directories:</b> {dirs}</p>
+    <p><b>Files:</b> {files}</p>
+    """
+    
+    # فحص محتويات كل مجلد
+    for d in dirs:
+        try:
+            contents = os.listdir(d)
+            html += f"<p><b>Contents of '{d}':</b> {contents}</p>"
+        except:
+            html += f"<p><b>Cannot read '{d}'</b></p>"
+    
+    return html
 
 if __name__ == '__main__':
     # للنشر على منصات الاستضافة
