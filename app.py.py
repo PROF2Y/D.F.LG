@@ -40,7 +40,7 @@ def style():
 # مجلد الصور
 @app.route('/images/<filename>')
 def images(filename):
-    return send_from_directory('images', filename)
+    return send_from_directory('صور', filename)
 
 if __name__ == '__main__':
     # للنشر على منصات الاستضافة
