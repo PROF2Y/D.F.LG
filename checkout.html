@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 class="glitch" data-text="🛒 SECURE CHECKOUT">🛒 SECURE CHECKOUT</h1>
+    <p>[ ENCRYPTED TRANSACTION PROCESSING ]</p>
+    <div class="terminal">PAYMENT GATEWAY: SECURED | ENCRYPTION: AES-256</div>
+  </header>
+  
+  <nav>
+    <a href="main.html">Shop</a>
+    <a href="checkout.html">Checkout</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <div class="container">
+    <h2>📦 ENCRYPTED CART DATA</h2>
+    <ul id="cartItems"></ul>
+
+    <form id="checkoutForm">
+      <div class="terminal">SECURE INPUT FIELDS - ALL DATA ENCRYPTED</div>
+      <input type="text" id="name" placeholder="🔐 الاسم الكامل [ENCRYPTED]" required>
+      <input type="text" id="address" placeholder="🏠 العنوان [SECURED]" required>
+      <button type="submit" class="order-btn">
+        <span class="loading" id="orderLoading" style="display: none;"></span>
+        تأمين وإرسال الطلب
+      </button>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Fouad Cyber Security Store</p>
+  </footer>
+
+  <script>
+    // Matrix Digital Rain Effect
+    function createMatrixRain() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '-1';
+      canvas.style.opacity = '0.1';
+      document.body.appendChild(canvas);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const letters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 50);
+    }
+
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let list = document.getElementById("cartItems");
+      list.innerHTML = "";
+      
+      if (cart.length === 0) {
+        list.innerHTML = "<li>🔒 ENCRYPTED CART: EMPTY</li>";
+      } else {
+        let total = 0;
+        cart.forEach((item, index) => {
+          let li = document.createElement("li");
+          li.innerHTML = `
+            <span>🔐 ${item.name}</span>
+            <span style="color: var(--accent-cyan);">${item.price} JOD</span>
+          `;
+          li.style.animation = `slideIn 0.5s ease ${index * 0.1}s both`;
+          list.appendChild(li);
+          total += item.price;
+        });
+        
+        // Add total
+        let totalLi = document.createElement("li");
+        totalLi.innerHTML = `
+          <span style="color: var(--primary-green); font-weight: bold;">TOTAL ENCRYPTED</span>
+          <span style="color: var(--accent-cyan); font-weight: bold; font-size: 1.2em;">${total} JOD</span>
+        `;
+        totalLi.style.borderTop = "2px solid var(--primary-green)";
+        totalLi.style.marginTop = "10px";
+        totalLi.style.paddingTop = "10px";
+        list.appendChild(totalLi);
+      }
+    }
+
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 255, 65, 0.95);
+        color: #000;
+        padding: 15px 20px;
+        border-radius: 5px;
+        font-family: 'Share Tech Mono', monospace;
+        font-weight: bold;
+        z-index: 1000;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s;
+      `;
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 3000);
+    }
+
+    // Initialize effects
+    document.addEventListener('DOMContentLoaded', function() {
+      createMatrixRain();
+      loadCart();
+      
+      // Animate terminal text
+      const terminal = document.querySelector('.terminal');
+      if (terminal) {
+        let i = 0;
+        const text = terminal.textContent;
+        terminal.textContent = '';
+        
+        function type() {
+          if (i < text.length) {
+            terminal.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 30);
+          }
+        }
+        type();
+      }
+    });
+
+    document.getElementById("checkoutForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const loading = document.getElementById("orderLoading");
+      const button = e.target.querySelector('button');
+      const originalText = button.textContent;
+      
+      // Show loading
+      loading.style.display = 'inline-block';
+      button.innerHTML = '<span class="loading"></span> ENCRYPTING DATA...';
+      button.disabled = true;
+
+      let name = document.getElementById("name").value;
+      let address = document.getElementById("address").value;
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      setTimeout(() => {
+        let orderDetails = cart.map(item => `- ${item.name} (${item.price} JOD)`).join("%0A");
+        let total = cart.reduce((sum, item) => sum + item.price, 0);
+
+        let now = new Date();
+        let date = now.toLocaleDateString("ar-EG");
+        let time = now.toLocaleTimeString("ar-EG");
+
+        let message = `🔒 SECURED ORDER%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A👤 الاسم: ${name}%0A🏠 العنوان: ${address}%0A💰 المجموع: ${total} JOD%0A📦 السلة:%0A${orderDetails}%0A⏰ ${time} - ${date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A🛡️ تم تشفير هذا الطلب بواسطة Fouad Cyber Store`;
+
+        let phone = "962795637371";
+        
+        // Reset button
+        loading.style.display = 'none';
+        button.textContent = 'تم الإرسال بنجاح ✅';
+        button.style.background = 'var(--primary-green)';
+        button.style.color = 'var(--dark-bg)';
+        
+        showNotification('🔒 ORDER ENCRYPTED & SENT SUCCESSFULLY', 'success');
+        
+        // Open WhatsApp
+        window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+        
+        // Clear cart after successful order
+        setTimeout(() => {
+          localStorage.removeItem("cart");
+          loadCart();
+          button.textContent = originalText;
+          button.style.background = '';
+          button.style.color = '';
+          button.disabled = false;
+          document.getElementById("name").value = '';
+          document.getElementById("address").value = '';
+        }, 3000);
+        
+      }, 2000); // Simulate encryption delay
+    });
+
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

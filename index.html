@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fouad Cyber Store</title>
+  <script>
+    // Redirect to splash screen immediately
+    window.location.href = 'splash.html';
+  </script>
+</head>
+<body>
+  <header>
+    <h1 class="glitch" data-text="🛡️ FOUAD CYBER SECURITY STORE">🛡️ FOUAD CYBER SECURITY STORE</h1>
+    <p>[ CYBER SECURITY & PROGRAMMING COURSES IN JORDAN ]</p>
+    <div class="terminal">SYSTEM STATUS: ONLINE | SECURITY LEVEL: MAXIMUM</div>
+  </header>
+
+  <nav>
+    <a href="index.html">Shop</a>
+    <a href="checkout.html">Checkout</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <!-- Cyber Security Courses -->
+  <div class="container">
+    <h2>🔥 Cyber Security Courses</h2>
+    <div class="products">
+      <div class="product"><img src="images/Dropped Image.png"><h3>Ethical Hacking Basics</h3><p>أساسيات اختبار الاختراق</p><p><b>25 JOD</b></p><button onclick="addToCart('Ethical Hacking Basics',25)">Add to Cart</button></div>
+      <div class="product"><img src="images/Dropped Image (2).png"><h3>Wi-Fi Cracking Mastery</h3><p>اختراق وحماية الشبكات اللاسلكية</p><p><b>30 JOD</b></p><button onclick="addToCart('Wi-Fi Cracking Mastery',30)">Add to Cart</button></div>
+      <div class="product"><img src="images/Dropped Image (3).png"><h3>Social Engineering 101</h3><p>الهندسة الاجتماعية</p><p><b>20 JOD</b></p><button onclick="addToCart('Social Engineering 101',20)">Add to Cart</button></div>
+    </div>
+  </div>
+
+  <!-- Programming Courses -->
+  <div class="container">
+    <h2>💻 Programming Courses</h2>
+    <div class="products">
+      <div class="product"><img src="images/progr.jpeg"><h3>Python for Beginners</h3><p>تعلم أساسيات بايثون</p><p><b>20 JOD</b></p><button onclick="addToCart('Python for Beginners',20)">Add to Cart</button></div>
+      <div class="product"><img src="images/progr.jpg"><h3>Java Crash Course</h3><p>مقدمة شاملة في Java</p><p><b>25 JOD</b></p><button onclick="addToCart('Java Crash Course',25)">Add to Cart</button></div>
+      <div class="product"><img src="images/programingj.jpeg"><h3>Fullstack Web</h3><p>تعلم HTML, CSS, JS, PHP</p><p><b>30 JOD</b></p><button onclick="addToCart('Fullstack Web',30)">Add to Cart</button></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Fouad Cyber Security Store</p>
+  </footer>
+
+  <script>
+    // Matrix Digital Rain Effect
+    function createMatrixRain() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '-1';
+      canvas.style.opacity = '0.1';
+      document.body.appendChild(canvas);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const letters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 50);
+    }
+
+    // Advanced Cart System
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({name, price, id: Date.now()});
+      localStorage.setItem("cart", JSON.stringify(cart));
+      
+      // Show advanced notification
+      showNotification(`🔒 SECURED: ${name} added to encrypted cart`, 'success');
+      
+      // Update cart counter if exists
+      updateCartCounter();
+      
+      // Trigger hacker-style effect
+      triggerGlitchEffect();
+    }
+
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 255, 65, 0.95);
+        color: #000;
+        padding: 15px 20px;
+        border-radius: 5px;
+        font-family: 'Share Tech Mono', monospace;
+        font-weight: bold;
+        z-index: 1000;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s;
+      `;
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 3000);
+    }
+
+    function triggerGlitchEffect() {
+      document.body.style.animation = 'glitch 0.3s ease';
+      setTimeout(() => {
+        document.body.style.animation = '';
+      }, 300);
+    }
+
+    function updateCartCounter() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const counter = document.getElementById('cart-counter');
+      if (counter) {
+        counter.textContent = cart.length;
+      }
+    }
+
+    // Typing effect for terminal
+    function typeWriter(element, text, speed = 50) {
+      let i = 0;
+      element.textContent = '';
+      
+      function type() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    // Initialize effects when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create matrix effect
+      createMatrixRain();
+      
+      // Animate terminal text
+      const terminal = document.querySelector('.terminal');
+      if (terminal) {
+        const originalText = terminal.textContent;
+        typeWriter(terminal, originalText, 30);
+      }
+      
+      // Add loading effect to products
+      const products = document.querySelectorAll('.product');
+      products.forEach((product, index) => {
+        product.style.opacity = '0';
+        product.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          product.style.transition = 'all 0.5s ease';
+          product.style.opacity = '1';
+          product.style.transform = 'translateY(0)';
+        }, 200 * index);
+      });
+
+      // Add scan line effect to header
+      setInterval(() => {
+        const header = document.querySelector('header');
+        header.style.background = 'linear-gradient(90deg, var(--dark-bg) 0%, rgba(0, 255, 65, 0.2) 50%, var(--dark-bg) 100%)';
+        
+        setTimeout(() => {
+          header.style.background = 'linear-gradient(90deg, var(--dark-bg) 0%, rgba(0, 255, 65, 0.1) 50%, var(--dark-bg) 100%)';
+        }, 100);
+      }, 5000);
+    });
+
+    // Add CSS animations dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
